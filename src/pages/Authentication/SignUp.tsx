@@ -6,14 +6,16 @@ import { UserType } from '../../services/types';
 import Input from '../../controls';
 import { API } from '../../services/userApi';
 import toast from 'react-hot-toast';
-const SignUp = () => {
+const SignUp = ({ setLoading }: any) => {
   const navigate = useNavigate();
   const [userForm, setUserForm] = useState<UserType>({
     email: '', password: '', name: '', confirmPassword: ''
   });
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true)
     API.UserRegister(userForm).then(response => {
+      setLoading(false)
       console.log(response)
       if (response.data.code != 200) {
         return toast.error(response.data.msg)
@@ -35,8 +37,7 @@ const SignUp = () => {
                 <img className="" src={Logo} alt="Logo" />
               </Link>
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                "We Produce for Productivity". Explore our range of Machines
               </p>
 
               <span className="mt-15 inline-block">
@@ -164,8 +165,13 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full h-screen border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+              <div className='grid justify-center mb-10 mt-5'>
+                <Link to="/">
+                  <img src={Logo} alt="Logo" />
+                </Link>
+              </div>
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign Up

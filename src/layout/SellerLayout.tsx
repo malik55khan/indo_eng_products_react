@@ -4,18 +4,17 @@ import Sidebar from '../components/Sidebar';
 import { Navigate, Outlet } from 'react-router-dom';
 import { LoggedUserType } from '../services/types';
 
-const DefaultLayout = () => {
+const SellerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const loggedUser: LoggedUserType = JSON.parse(localStorage.getItem('loggedUser') || JSON.stringify({ jwt: '' }));
   loggedUser.role = Number(loggedUser.role);
-  if (loggedUser.role == 5) return <Navigate to="/admin" replace />
-  if (loggedUser.role == 1) return <Navigate to="/seller" replace />
+  if (!loggedUser.jwt || loggedUser.role !== 1) return <Navigate to="/" replace />
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
-        {/* {!!loggedUser.role && <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />} */}
+        {!!loggedUser.role && <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />}
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
@@ -39,4 +38,4 @@ const DefaultLayout = () => {
   );
 };
 
-export default DefaultLayout;
+export default SellerLayout;

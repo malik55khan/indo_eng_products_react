@@ -1,27 +1,59 @@
 import { lazy } from 'react';
-
-const Calendar = lazy(() => import('../pages/Calendar'));
-const Chart = lazy(() => import('../pages/Chart'));
-const FormElements = lazy(() => import('../pages/Form/FormElements'));
-const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
-const Profile = lazy(() => import('../pages/Profile'));
-const Settings = lazy(() => import('../pages/Settings'));
-const Tables = lazy(() => import('../pages/Tables'));
-const Products = lazy(() => import('../pages/Products'));
+const Products = lazy(() => import('../pages/Products/Products'));
+const MyProducts = lazy(() => import('../pages/Products/MyProduct'));
+const Machines = lazy(() => import('../pages/Admin/Machines'));
+const UnApporved = lazy(() => import('../pages/Admin/UnApproved'));
 const UploadProduct = lazy(() => import('../pages/Products/UploadProduct'));
-const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
-const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
-
+const Enquiries = lazy(() => import('../pages/Enquiry/Enquiries'));
+const NotFoundView = lazy(() => import('../pages/ErrorPages/NotFoundView'));
+const AdminLayout = lazy(() => import('../layout/AdminLayout'));
+const SellerLayout = lazy(() => import('../layout/SellerLayout'));
 const coreRoutes = [
   {
-    path: '/product-list',
+    path: 'admin',
+    component: AdminLayout,
+    children: [
+      {path: '', component: Products },
+      { path: 'machine-enquiry', component: Enquiries, title: 'Enquiries' },
+      { path: 'all-machines', component: Machines, title: 'All Machines' },
+      { path: 'pending-approval', component: UnApporved, title: 'Pending for Approval' },
+      { path: '*', component: NotFoundView },
+      ]
+  },
+  {
+    path: 'seller',
+    component: SellerLayout,
+    children: [
+      { path: '*', component: NotFoundView },
+      {path: '', component: Products,title: 'Products', },
+      {path: 'my-products', component: MyProducts,title: 'My Products' },
+      {path: 'upload-product', component: UploadProduct ,title: 'Sell Machine' }
+      
+      ]
+  }
+
+]
+/*
+const coreRoutes = [
+  {
+    path: '/',
     title: 'Products',
     component: Products,
+  },
+  {
+    path: '/my-products',
+    title: 'My Products',
+    component: MyProducts,
   },
   {
     path: '/upload-product',
     title: 'Sell Machine',
     component: UploadProduct,
+  },
+  {
+    path: '/machine-enquiry',
+    title: 'Machine Enquiry',
+    component: Enquiries,
   },
   {
     path: '/calendar',
@@ -69,6 +101,6 @@ const coreRoutes = [
     component: Buttons,
   },
 ];
-
+*/
 const routes = [...coreRoutes];
 export default routes;

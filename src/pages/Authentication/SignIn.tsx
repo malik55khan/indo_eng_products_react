@@ -1,23 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API } from '../../services/userApi';
 import { UserType } from '../../services/types';
 import toast from 'react-hot-toast';
 import Input from '../../controls';
-const SignIn = () => {
+import Logo from '../../images/logo/logo.png';
+const SignIn = ({ setLoading }: any) => {
   const navigate = useNavigate();
   const [userForm, setUserForm] = useState<UserType>({
     email: '', password: ''
   });
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    setLoading(true)
     API.UserLogin(userForm).then(response => {
+      setLoading(false)
       if (response.data.code != 200) {
         return toast.error(response.data.msg)
       } else {
         toast.success(response.data.msg);
         window.localStorage.setItem('loggedUser', JSON.stringify(response.data.data));
-        navigate("/");
+        let role = Number(response.data.data);
+        navigate(role == 5 ? '/admin' : role == 1 ? '/seller' : '/');
       }
 
     })
@@ -26,8 +30,14 @@ const SignIn = () => {
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full h-screen border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+              <div className='grid justify-center mb-10 mt-5'>
+                <Link to="/">
+                  <img src={Logo} alt="Logo" />
+                </Link>
+              </div>
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign In
